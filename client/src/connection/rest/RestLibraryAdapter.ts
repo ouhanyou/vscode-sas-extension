@@ -97,7 +97,7 @@ class RestLibraryAdapter implements LibraryAdapter {
   }
 
   public async getColumns(
-    item: LibraryItem,
+    item: Pick<LibraryItem, "library" | "name">,
     start: number,
     limit: number,
   ): Promise<ColumnCollection> {

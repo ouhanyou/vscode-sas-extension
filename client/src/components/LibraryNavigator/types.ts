@@ -28,7 +28,7 @@ export interface LibraryAdapter {
   connect(): Promise<void>;
   deleteTable(item: LibraryItem): Promise<void>;
   getColumns(
-    item: LibraryItem,
+    item: Pick<LibraryItem, "library" | "name">,
     start: number,
     limit: number,
   ): Promise<ColumnCollection>;

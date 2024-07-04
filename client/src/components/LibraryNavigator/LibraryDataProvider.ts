@@ -18,6 +18,7 @@ import {
   TreeItemCollapsibleState,
   TreeView,
   Uri,
+  commands,
   languages,
   window,
 } from "vscode";
@@ -41,6 +42,7 @@ class LibraryDataProvider
   private _onDidChangeTreeData = new EventEmitter<LibraryItem | undefined>();
   private _treeView: TreeView<LibraryItem>;
   private _dropEditProvider: Disposable;
+  private _fetchColumnsCommand: Disposable;
 
   public dropMimeTypes: string[] = [];
   public dragMimeTypes: string[] = [libraryItemMimeType, tableTextMimeType];
@@ -62,10 +64,21 @@ class LibraryDataProvider
       this.selector(),
       this,
     );
+
+    this._fetchColumnsCommand = commands.registerCommand(
+      "SAS.fetchColumns",
+      async ({ library, name }) => {
+        const columns = await this.model.fetchColumns({
+          library,
+          name,
+        });
+        return columns;
+      },
+    );
   }
 
   public getSubscriptions(): Disposable[] {
-    return [this._treeView, this._dropEditProvider];
+    return [this._treeView, this._dropEditProvider, this._fetchColumnsCommand];
   }
 
   public handleDrag(

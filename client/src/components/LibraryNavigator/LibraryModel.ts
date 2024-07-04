@@ -95,7 +95,7 @@ class LibraryModel {
     );
   }
 
-  public async fetchColumns(item: LibraryItem) {
+  public async fetchColumns(item: Pick<LibraryItem, "library" | "name">) {
     await this.libraryAdapter.setup();
     let offset = 0;
     let items = [];
